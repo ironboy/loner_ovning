@@ -4,8 +4,7 @@ exports.schema = {
   firstname: String,
   lastname: String,
   salary: Number,
-  departmentId: String,
-  age: Number,
+  departmentId: String
 };
 
 // API routes for Employee
