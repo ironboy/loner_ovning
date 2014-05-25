@@ -1,6 +1,7 @@
 // Require the mongoose connection
 var mongoose = require("../mongooseConnect").mongoose;
 
+
 // Require the schemas and build models
 // (just add your schemas to the schema array)
 var schemas = ["Employee","Department"];
@@ -13,6 +14,25 @@ for(var i = 0; i < schemas.length; i++){
     )
   );
 }
+
+
+// Define different REST-api based routes
+var routes = [];
+
+routes.push({
+  path: "employees",
+  method: "get",
+  func: function(req,res){
+    model.Employee.find({},function(err,obj){
+      res.json(obj);
+    });
+  }
+});
+
+// Export the routes
+exports.routes = routes;
+
+// Old code follows
 
 var contactSchema = mongoose.Schema({ firstname: 'string', lastname: 'string', age: 'number' });
 var Contact = mongoose.model('Contact', contactSchema);
