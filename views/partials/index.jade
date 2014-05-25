@@ -5,7 +5,7 @@ table.table.table-striped
     td First Name
     td Last Name
     td Age
-    td(colspan="3") Actions
+    td Actions
   tbody
     tr(ng-repeat="contact in contacts")
       td {{contact.firstname}}
@@ -13,9 +13,9 @@ table.table.table-striped
       td {{contact.age}}
       td
         a(href="/contacts/{{contact._id}}") Show
-      td
+        span(style="display:inline-block;width:20px")
         a(href="/contacts/{{contact._id}}/edit") Edit
-      td
+        span(style="display:inline-block;width:20px")
         a(href="/contacts/{{contact._id}}/delete") Delete
 
 button.btn.btn-success(ng-click="new()") New Contact
