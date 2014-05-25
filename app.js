@@ -26,20 +26,54 @@ app.configure('production', function(){
 app.get('/', routes.index);
 app.get('/partials/:name', routes.partials);
 
-// Register routes from api.js
-for(var i = 0; i < api.routes.length; i++){
-  app[api.routes[i].method](
-    '/api/' + api.routes[i].path,
-    api.routes[i].func
+// Require the mongoose connection
+var mongoose = require("./mongooseConnect").mongoose;
+
+// Require the schemas and build models
+// (just add your schemas to the schema array)
+var schemas = ["Employee","Department"];
+var model = {};
+for(var i = 0; i < schemas.length; i++){
+  model[schemas[i]] = mongoose.model(
+    schemas[i],
+    mongoose.Schema(
+      require("./schemas/" + schemas[i])[schemas[i] + "Schema"]
+    )
   );
 }
 
+// Register routes from api.js
+for(var i in api.routes){
+  (function(){
+    var route = api.routes[i];
+    var path = i.split(':');
+    var method = path.shift().toLowerCase();
+    path = path.join(':');
+    console.log("Registering api paths",method,path);
+    app[method]("/api/" + path,function(req,res){
+      if(!route.query){
+        route.response({},res,req,model[route.model]);
+        return;
+      }
+      model[route.model][route.queryType || "find"](route.query(req),function(err,obj){
+        if(err){
+          console.log("API error",err);
+          res.json([]);
+        }
+        else {
+          route.response(obj,res,req,model[route.model]);
+        }
+      });
+    });
+  })();
+}
+
 // Old type routes
-app.get('/api/contacts', api.contacts);
+/*app.get('/api/contacts', api.contacts);
 app.get('/api/contacts/:id', api.contact);
 app.post('/api/contacts', api.createContact);
 app.put('/api/contacts/:id', api.updateContact);
-app.delete('/api/contacts/:id', api.destroyContact);
+app.delete('/api/contacts/:id', api.destroyContact);*/
 
 app.get('*', routes.index);
 

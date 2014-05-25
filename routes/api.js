@@ -1,41 +1,48 @@
-// Require the mongoose connection
-var mongoose = require("../mongooseConnect").mongoose;
-
-
-// Require the schemas and build models
-// (just add your schemas to the schema array)
-var schemas = ["Employee","Department"];
-var model = {};
-for(var i = 0; i < schemas.length; i++){
-  model[schemas[i]] = mongoose.model(
-    schemas[i],
-    mongoose.Schema(
-      require("../schemas/" + schemas[i])[schemas[i] + "Schema"]
-    )
-  );
-}
-
-
 // Define different REST-api based routes
 // will generate JSON-based replies on URLs below /api/
 // (like /api/employees etc.)
-var routes = [];
 
-routes.push({
-  path: "employees",
-  method: "get",
-  func: function(req,res){
-    model.Employee.find({},function(err,obj){
-      res.json(obj);
-    });
+// Please note:
+// property names should be written as method + path 
+// (i.e. "GET:employees") 
+// mandatory properties: model, response
+// extra properties: queryType (will default to "find"), query
+// where query should be a function recieving req and returning
+// the query. If no query is set, no database query will run.
+// Response will recieve the folowing arguments - obj, res, req, model
+
+var routes = {};
+
+routes["GET:employees"] = {
+  model: "Employee",
+  query: function(req){ return {}; },
+  response: function(obj,res){ res.json(obj); }
+};
+
+
+routes["GET:employee/:id"] = {
+  model: "Employee",
+  queryType: "findOne",
+  query: function(req){ return {_id: req.params.id}; },
+  response: function(obj,res){ res.json(obj); }
+};
+
+routes["POST:employees"] = {
+  model: "Employee",
+  response: function(obj, res, req, model){
+    var employee = new model(req.body);
+    employee.save();
+    res.json(req.body);
   }
-});
+};
+
 
 // Export the routes
 exports.routes = routes;
 
-// Old code follows
 
+// Old code follows
+/*
 var contactSchema = mongoose.Schema({ firstname: 'string', lastname: 'string', age: 'number' });
 var Contact = mongoose.model('Contact', contactSchema);
 
@@ -70,4 +77,4 @@ exports.destroyContact = function(req, res) {
   Contact.remove({ _id: req.params.id }, function(err) {
     res.json(true);
   });
-};
+};*/
