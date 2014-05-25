@@ -22,11 +22,6 @@ form.form-horizontal(name="form", ng-submit="submit()", novalidate)
     .controls
       input(ng-model="employee.lastname", type="text", name="lastname", placeholder="Last Name", require)
 
-  .control-group(ng-class="errorClass('age')")
-    label.control-label(for="age") Age
-    .controls
-      input(ng-model="employee.age", type="number", name="age", placeholder="Age Name", require)
-
   .control-group(ng-class="errorClass('salary')")
     label.control-label(for="salary") Salary
     .controls
