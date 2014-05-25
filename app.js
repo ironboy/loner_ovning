@@ -76,29 +76,10 @@ function regSchema(schemaName){
   "Department"
 ].forEach(regSchema);
 
-
 // Take care of routes not defined
 // (important that this comes last 
 //  - after all routes have been defined)
 app.get('*', routes.index);
-
-/*var p = new model.Department({
-  name: "Development",
-  streetAdress: "Main Street 1",
-  zipCode: "111 11",
-  town: "Maintown",
-  info: "We wage it everyday!"
-});
-p.save();
-console.log(p);
-
-model.Contact.find({},function(err,found){
-  found.forEach(function(x){
-    x.departmentId = p._id;
-    x.save();
-  });
-});*/
-
 
 // Start the server on port 3000
 app.listen(3000, function(){
