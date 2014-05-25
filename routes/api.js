@@ -3,13 +3,17 @@
 // (like /api/employees etc.)
 
 // Please note:
-// property names should be written as method + path 
-// (i.e. "GET:employees") 
-// mandatory properties: model, response
-// extra properties: queryType (will default to "find"), query
-// where query should be a function recieving req and returning
-// the query. If no query is set, no database query will run.
-// Response will recieve the folowing arguments - obj, res, req, model
+// Register each route as this
+// routes["METHOD:url"] = obj  
+// where METHOD is GET, POST, PUT or delete
+// and url is an url below /api
+// the object should have the following mandatory properties:
+//   model : "Modelname",
+//   response: a function that will recieve obj, res, req, model
+//   ... it should be used to return a response through a call to res
+// and can have the following optional properties:
+//   query: function recieving req-obj, returning a query object
+//   queryType: defaults to "find" if omitted
 
 var routes = {};
 
