@@ -9,5 +9,6 @@ var app = angular.module('myApp', ["ngResource"]).
       .when("/contacts/new", { templateUrl: "partials/edit.jade", controller: "ContactsEditCtrl" })
       .when("/contacts/:id", { templateUrl: "partials/show.jade", controller: "ContactsShowCtrl" })
       .when("/contacts/:id/edit", { templateUrl: "partials/edit.jade", controller: "ContactsEditCtrl" })
+      .when("/contacts/:id/delete", { templateUrl: "partials/show.jade", controller: "ContactsDestroyCtrl"})
       .otherwise({ redirectTo: "/contacts" });
   }]);

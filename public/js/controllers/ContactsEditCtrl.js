@@ -7,7 +7,6 @@ app.controller("ContactsEditCtrl", function($scope, $routeParams, $location, Con
   }
 
   $scope.submit = function() {
-    console.log("submit")
 
     function success(response) {
       console.log("success", response)
