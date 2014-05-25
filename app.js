@@ -31,7 +31,7 @@ var mongoose = require("./mongooseConnect").mongoose;
 
 // Require the schemas and build models
 // (just add your schemas to the schema array)
-var schemas = ["Employee","Department"];
+var schemas = ["Employee","Department","Contact"];
 var model = {};
 for(var i = 0; i < schemas.length; i++){
   model[schemas[i]] = mongoose.model(
@@ -42,38 +42,39 @@ for(var i = 0; i < schemas.length; i++){
   );
 }
 
-// Register routes from api.js
-for(var i in api.routes){
-  (function(){
-    var route = api.routes[i];
-    var path = i.split(':');
-    var method = path.shift().toLowerCase();
-    path = path.join(':');
-    console.log("Registering api paths",method,path);
-    app[method]("/api/" + path,function(req,res){
-      if(!route.query){
-        route.response({},res,req,model[route.model]);
-        return;
+// Register an api route
+function regRoute(i){
+  var route = api.routes[i];
+  var path = i.split(':');
+  var method = path.shift().toLowerCase();
+  path = path.join(':');
+  console.log("Registering api paths",method,path);
+  app[method]("/api/" + path,function(req,res){
+    if(!route.query){
+      route.response({},res,req,model[route.model]);
+      return;
+    }
+    var args = route.query(req);
+    if(!args.push){args = [args];}
+    args.push(function(err,obj){
+      if(err){
+        console.log("API error",err);
+        res.json([]);
       }
-      model[route.model][route.queryType || "find"](route.query(req),function(err,obj){
-        if(err){
-          console.log("API error",err);
-          res.json([]);
-        }
-        else {
-          route.response(obj,res,req,model[route.model]);
-        }
-      });
+      else {
+        route.response(obj,res,req,model[route.model]);
+      }
     });
-  })();
+    model[route.model][route.queryType || "find"].apply(
+      model[route.model], args
+    );
+  });
 }
 
-// Old type routes
-/*app.get('/api/contacts', api.contacts);
-app.get('/api/contacts/:id', api.contact);
-app.post('/api/contacts', api.createContact);
-app.put('/api/contacts/:id', api.updateContact);
-app.delete('/api/contacts/:id', api.destroyContact);*/
+// Register each api route
+for(var i in api.routes){
+  regRoute(i);
+}
 
 app.get('*', routes.index);
 
