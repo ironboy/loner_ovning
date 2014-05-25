@@ -29,14 +29,14 @@ app.get('/partials/:name', routes.partials);
 var mongoose = require("./mongooseConnect").mongoose;
 
 // Register an api route
-function regRoute(route, i){
+function regRoute(route, i, modelName){
   var path = i.split(':');
   var method = path.shift().toLowerCase();
   path = path.join(':');
   console.log("Registering api paths",method,path);
   app[method]("/api/" + path,function(req,res){
     if(!route.query){
-      route.response({},res,req,model[route.model]);
+      route.response({},res,req,model);
       return;
     }
     var args = route.query(req);
@@ -47,11 +47,11 @@ function regRoute(route, i){
         res.json([]);
       }
       else {
-        route.response(obj,res,req,model[route.model]);
+        route.response(obj,res,req,model);
       }
     });
-    model[route.model][route.queryType || "find"].apply(
-      model[route.model], args
+    model[modelName][route.queryType || "find"].apply(
+      model[modelName], args
     );
   });
 }
@@ -62,12 +62,12 @@ function regSchema(schemaName){
   console.log("Registrering schema",schemaName);
   var i, s = require("./schemas/" + schemaName);
   var schema =  mongoose.Schema(s.schema);
-  for(i in s.methods){ 
-    schema.methods[i] = s.methods[i]; 
+  for(i in s.methods){
+    schema.methods[i] = s.methods[i];
     console.log("Registering method",schemaName + '.' + i);
   }
   model[schemaName] = mongoose.model(schemaName,schema);
-  for(i in s.routes){regRoute(s.routes[i],i);}
+  for(i in s.routes){regRoute(s.routes[i],i,schemaName);}
 }
 
 // Register all schemas
@@ -82,6 +82,24 @@ function regSchema(schemaName){
 // (important that this comes last 
 //  - after all routes have been defined)
 app.get('*', routes.index);
+
+/*var p = new model.Department({
+  name: "Wages",
+  streetAdress: "Main Street 1",
+  zipCode: "111 11",
+  town: "Maintown",
+  info: "We wage it everyday!"
+});
+p.save();
+console.log(p);
+
+model.Contact.find({},function(err,found){
+  found.forEach(function(x){
+    x.departmentId = p._id;
+    x.save();
+  });
+});*/
+
 
 // Start the server on port 3000
 app.listen(3000, function(){
