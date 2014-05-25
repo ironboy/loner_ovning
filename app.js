@@ -36,7 +36,7 @@ function regRoute(route, i, modelName){
   console.log("Registering api paths",method,path);
   app[method]("/api/" + path,function(req,res){
     if(!route.query){
-      route.response({},res,req,model);
+      route.response({},res,req,models);
       return;
     }
     var args = route.query(req);
@@ -47,17 +47,17 @@ function regRoute(route, i, modelName){
         res.json([]);
       }
       else {
-        route.response(obj,res,req,model);
+        route.response(obj,res,req,models);
       }
     });
-    model[modelName][route.queryType || "find"].apply(
-      model[modelName], args
+    models[modelName][route.queryType || "find"].apply(
+      models[modelName], args
     );
   });
 }
 
 // Register a schema, its methods and its routes
-var model = {};
+var models = {};
 function regSchema(schemaName){
   console.log("Registrering schema",schemaName);
   var i, s = require("./schemas/" + schemaName);
@@ -66,7 +66,7 @@ function regSchema(schemaName){
     schema.methods[i] = s.methods[i];
     console.log("Registering method",schemaName + '.' + i);
   }
-  model[schemaName] = mongoose.model(schemaName,schema);
+  models[schemaName] = mongoose.model(schemaName,schema);
   for(i in s.routes){regRoute(s.routes[i],i,schemaName);}
 }
 

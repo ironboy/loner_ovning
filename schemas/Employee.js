@@ -10,8 +10,8 @@ exports.schema = {
 
 // Methods for Employee
 exports.methods = {
-  getDepartment: function(model, callback){
-    model.Department.findOne(
+  getDepartment: function(models, callback){
+    models.Department.findOne(
       {_id: this.departmentId },
       function(err,department){ callback(department); }
     );
@@ -23,10 +23,10 @@ var routes = exports.routes = {};
 
 routes["GET:employees"] = {
   query: function(req){ return {}; },
-  response:  function(arr,res, req, model){
+  response:  function(arr,res, req, models){
     var newArr = [];
     arr.forEach(function(obj){
-      obj.getDepartment(model, function(department){
+      obj.getDepartment(models, function(department){
         obj = obj.toObject();
         obj.department = department ? department.name : '';
         newArr.push(obj);
@@ -42,8 +42,8 @@ routes["GET:employees"] = {
 routes["GET:employees/:id"] = {
   queryType: "findOne",
   query: function(req){ return {_id: req.params.id}; },
-  response:  function(obj,res, req, model){
-    obj.getDepartment(model, function(department){
+  response:  function(obj,res, req, models){
+    obj.getDepartment(models, function(department){
       obj = obj.toObject();
       obj.department = department ? department.name : '';
       res.json(obj);
