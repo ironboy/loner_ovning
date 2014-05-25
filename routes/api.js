@@ -1,12 +1,12 @@
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/contacts_database');
+// Require the mongoose connection
+var mongoose = require("../mongooseConnect").mongoose;
 
 var contactSchema = mongoose.Schema({ firstname: 'string', lastname: 'string', age: 'number' });
 var Contact = mongoose.model('Contact', contactSchema);
 
 exports.contacts = function(req, res) {
   Contact.find({}, function(err, obj) {
-    res.json(obj)
+    res.json(obj);
   });
 };
 
