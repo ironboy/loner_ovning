@@ -42,6 +42,14 @@ routes["GET:employees/:id"] = {
   }
 };
 
+// Return a list of employees in a certain department
+routes["GET:employees/departments/:id"] = {
+  query: function(req){ return {departmentId: req.params.id}; },
+  response:  function(arr,res){
+    res.json(arr);
+  }
+};
+
 // Create a new employee
 routes["POST:employees"] = {
   response: function(obj, res, req, models){
