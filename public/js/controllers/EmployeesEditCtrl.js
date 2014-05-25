@@ -1,10 +1,12 @@
-app.controller("EmployeesEditCtrl", function($scope, $routeParams, $location, Employee) {
+app.controller("EmployeesEditCtrl", function($scope, $routeParams, $location, Employee, Department) {
 
   if ($routeParams.id) {
     $scope.employee = Employee.show({ id: $routeParams.id });
   } else {
     $scope.employee = new Employee();
   }
+
+  $scope.departments = Department.index();
 
   $scope.submit = function() {
 
@@ -40,7 +42,7 @@ app.controller("EmployeesEditCtrl", function($scope, $routeParams, $location, Em
 
   $scope.errorClass = function(name) {
     var s = $scope.form[name];
-    return s.$invalid && s.$dirty ? "error" : "";
+    return s && s.$invalid && s.$dirty ? "error" : "";
   };
 
   $scope.errorMessage = function(name) {

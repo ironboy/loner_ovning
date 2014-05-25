@@ -83,7 +83,7 @@ function regSchema(schemaName){
 app.get('*', routes.index);
 
 /*var p = new model.Department({
-  name: "Wages",
+  name: "Development",
   streetAdress: "Main Street 1",
   zipCode: "111 11",
   town: "Maintown",

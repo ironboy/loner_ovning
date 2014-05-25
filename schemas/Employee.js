@@ -1,10 +1,11 @@
 // Schema for Employee;
 exports.schema = {
+  pno: Number,
   firstname: String,
   lastname: String,
+  salary: Number,
+  departmentId: String,
   age: Number,
-  pno: Number,
-  departmentId: String
 };
 
 // Methods for Employee
@@ -65,8 +66,11 @@ routes["PUT:employees/:id"] = {
       req.params.id,
       {
         $set: {
+          pno: req.body.pno,
           firstname: req.body.firstname,
           lastname: req.body.lastname,
+          salary: req.body.salary,
+          departmentId: req.body.departmentId,
           age: req.body.age
         }
       },
