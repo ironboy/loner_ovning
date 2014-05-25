@@ -1,6 +1,7 @@
-var express = require('express'),
-  routes = require('./routes'),
-  api = require('./routes/api');
+// Some basic setup
+var express = require('express');
+var routes = require('./routes');
+var api = require('./routes/api');
 
 var app = module.exports = express();
 
@@ -21,9 +22,19 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
+// Main (non-ajax/REST routes)
 app.get('/', routes.index);
 app.get('/partials/:name', routes.partials);
 
+// Register routes from api.js
+for(var i = 0; i < api.routes.length; i++){
+  app[api.routes[i].method](
+    '/api/' + api.routes[i].path,
+    api.routes[i].func
+  );
+}
+
+// Old type routes
 app.get('/api/contacts', api.contacts);
 app.get('/api/contacts/:id', api.contact);
 app.post('/api/contacts', api.createContact);
@@ -32,7 +43,9 @@ app.delete('/api/contacts/:id', api.destroyContact);
 
 app.get('*', routes.index);
 
+// Start the server on port 3000
 app.listen(3000, function(){
+  // Log some info about the server to the console
   console.log(
     "Express server listening on port %d in %s mode",
     this.address().port,
