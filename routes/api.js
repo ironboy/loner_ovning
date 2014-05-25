@@ -8,7 +8,9 @@ var model = {};
 for(var i = 0; i < schemas.length; i++){
   model[schemas[i]] = mongoose.model(
     schemas[i],
-    mongoose.Schema(require("../schemas/" + schemas[i])[schemas[i] + "Schema"])
+    mongoose.Schema(
+      require("../schemas/" + schemas[i])[schemas[i] + "Schema"]
+    )
   );
 }
 
