@@ -1,6 +1,17 @@
 // Require the mongoose connection
 var mongoose = require("../mongooseConnect").mongoose;
 
+// Require the schemas and build models
+// (just add your schemas to the schema array)
+var schemas = ["Employee","Department"];
+var model = {};
+for(var i = 0; i < schemas.length; i++){
+  model[schemas[i]] = mongoose.model(
+    schemas[i],
+    mongoose.Schema(require("../schemas/" + schemas[i])[schemas[i] + "Schema"])
+  );
+}
+
 var contactSchema = mongoose.Schema({ firstname: 'string', lastname: 'string', age: 'number' });
 var Contact = mongoose.model('Contact', contactSchema);
 
