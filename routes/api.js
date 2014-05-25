@@ -17,6 +17,8 @@ for(var i = 0; i < schemas.length; i++){
 
 
 // Define different REST-api based routes
+// will generate JSON-based replies on URLs below /api/
+// (like /api/employees etc.)
 var routes = [];
 
 routes.push({
