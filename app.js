@@ -1,7 +1,6 @@
 // Some basic setup
 var express = require('express');
 var routes = require('./routes');
-var api = require('./routes/api');
 
 var app = module.exports = express();
 
@@ -29,22 +28,8 @@ app.get('/partials/:name', routes.partials);
 // Require the mongoose connection
 var mongoose = require("./mongooseConnect").mongoose;
 
-// Require the schemas and build models
-// (just add your schemas to the schema array)
-var schemas = ["Employee","Department","Contact"];
-var model = {};
-for(var i = 0; i < schemas.length; i++){
-  model[schemas[i]] = mongoose.model(
-    schemas[i],
-    mongoose.Schema(
-      require("./schemas/" + schemas[i])[schemas[i] + "Schema"]
-    )
-  );
-}
-
 // Register an api route
-function regRoute(i){
-  var route = api.routes[i];
+function regRoute(route, i){
   var path = i.split(':');
   var method = path.shift().toLowerCase();
   path = path.join(':');
@@ -71,11 +56,31 @@ function regRoute(i){
   });
 }
 
-// Register each api route
-for(var i in api.routes){
-  regRoute(i);
+// Register a schema, its methods and its routes
+var model = {};
+function regSchema(schemaName){
+  console.log("Registrering schema",schemaName);
+  var i, s = require("./schemas/" + schemaName);
+  var schema =  mongoose.Schema(s.schema);
+  for(i in s.methods){ 
+    schema.methods[i] = s.methods[i]; 
+    console.log("Registering method",schemaName + '.' + i);
+  }
+  model[schemaName] = mongoose.model(schemaName,schema);
+  for(i in s.routes){regRoute(s.routes[i],i);}
 }
 
+// Register all schemas
+[
+  "Employee",
+  "Department",
+  "Contact"
+].forEach(regSchema);
+
+
+// Take care of routes not defined
+// (important that this comes last 
+//  - after all routes have been defined)
 app.get('*', routes.index);
 
 // Start the server on port 3000

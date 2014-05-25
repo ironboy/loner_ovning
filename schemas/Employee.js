@@ -1,5 +1,5 @@
 // Schema for Employees
-exports.EmployeeSchema ={
+exports.schema ={
   firstname: String,
   lastname: String,
   age: Number,

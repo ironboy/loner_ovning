@@ -1,5 +1,5 @@
 // Schema for Departments;
-exports.DepartmentSchema = {
+exports.schema = {
   streetAdress: String,
   zipCode: String,
   town: String,
