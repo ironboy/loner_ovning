@@ -8,78 +8,36 @@ exports.schema = {
   age: Number,
 };
 
-// Methods for Employee
-exports.methods = {
-  getDepartment: function(models, callback){
-    models.Department.findOne(
-      {_id: this.departmentId },
-      function(err,department){ callback(department); }
-    );
-  }
-};
-
 // API routes for Employee
 var routes = exports.routes = {};
 
-routes["GET:employees"] = {
-  query: function(req){ return {}; },
-  response:  function(arr,res, req, models){
-    var newArr = [];
-    arr.forEach(function(obj){
-      obj.getDepartment(models, function(department){
-        obj = obj.toObject();
-        obj.department = department ? department.name : '';
-        newArr.push(obj);
-        if (newArr.length == arr.length){
-          res.json(newArr);
-        }
-      });
-    });
-  }
-};
 
 
-routes["GET:employees/:id"] = {
-  queryType: "findOne",
-  query: function(req){ return {_id: req.params.id}; },
-  response:  function(obj,res, req, models){
-    obj.getDepartment(models, function(department){
-      obj = obj.toObject();
-      obj.department = department ? department.name : '';
-      res.json(obj);
-    });
-  }
-};
-
+// Create a new employee
 routes["POST:employees"] = {
-  response: function(obj, res, req, model){
-    var employee = new model.Employee(req.body);
+  response: function(obj, res, req, models){
+    var employee = new models.Employee(req.body);
     employee.save();
-    res.json(req.body);
+    res.json(employee);
   }
 };
 
+// Update an employee
 routes["PUT:employees/:id"] = {
   queryType: "findByIdAndUpdate",
   query: function(req){
+    var b = req.body;
+    delete b._id;
     return [
       req.params.id,
-      {
-        $set: {
-          pno: req.body.pno,
-          firstname: req.body.firstname,
-          lastname: req.body.lastname,
-          salary: req.body.salary,
-          departmentId: req.body.departmentId,
-          age: req.body.age
-        }
-      },
+      { $set: b},
       {upsert: true}
     ];
   },
-  response: function(obj,res){ return res.json(true); }
+  response: function(obj,res){ res.json(true); }
 };
 
+// Delete an employee
 routes["DELETE:employees/:id"] = {
   queryType: "remove",
   query: function(req){ return {_id: req.params.id}; },
