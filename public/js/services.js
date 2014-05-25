@@ -1,7 +1,7 @@
 'use strict';
 
-app.factory("Contact", function($resource, $http) {
-  var resource = $resource("/api/contacts/:id", { id: "@_id" },
+app.factory("Employee", function($resource, $http) {
+  var resource = $resource("/api/employees/:id", { id: "@_id" },
     {
       'create':  { method: 'POST' },
       'index':   { method: 'GET', isArray: true },

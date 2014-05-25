@@ -1,9 +1,9 @@
-app.controller("ContactsEditCtrl", function($scope, $routeParams, $location, Contact) {
+app.controller("EmployeesEditCtrl", function($scope, $routeParams, $location, Employee) {
 
   if ($routeParams.id) {
-    $scope.contact = Contact.show({ id: $routeParams.id });
+    $scope.employee = Employee.show({ id: $routeParams.id });
   } else {
-    $scope.contact = new Contact();
+    $scope.employee = new Employee();
   }
 
   $scope.submit = function() {
@@ -27,15 +27,15 @@ app.controller("ContactsEditCtrl", function($scope, $routeParams, $location, Con
     }
 
     if ($routeParams.id) {
-      Contact.update($scope.contact, success, failure);
+      Employee.update($scope.employee, success, failure);
     } else {
-      Contact.create($scope.contact, success, failure);
+      Employee.create($scope.employee, success, failure);
     }
 
   };
 
   $scope.cancel = function() {
-    $location.path("/contacts/"+$scope.contact._id);
+    $location.path("/contacts/"+$scope.employee._id);
   };
 
   $scope.errorClass = function(name) {

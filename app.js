@@ -73,8 +73,7 @@ function regSchema(schemaName){
 // Register all schemas
 [
   "Employee",
-  "Department",
-  "Contact"
+  "Department"
 ].forEach(regSchema);
 
 

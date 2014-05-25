@@ -2,17 +2,17 @@ h3 Contact Details
 
 div
   h5(style="display:inline-block;width:150px") First Name
-  span {{contact.firstname}}
+  span {{employee.firstname}}
   div
   h5(style="display:inline-block;width:150px") Last Name
-  span {{contact.lastname}}
+  span {{employee.lastname}}
   div
   h5(style="display:inline-block;width:150px") Age
-  span {{contact.age}}
+  span {{employee.age}}
 
 hr
 
 div
-  a(href="/contacts") Back
+  a(href="/employees") Back
 div
-  a(href="/contacts/{{contact._id}}/edit") Edit
+  a(href="/employees/{{employee._id}}/edit") Edit

@@ -12544,7 +12544,7 @@ var ngCloakDirective = ngDirective({
       <script>
         function SettingsController($scope) {
           $scope.name = "John Smith";
-          $scope.contacts = [
+          $scope.employees = [
             {type:'phone', value:'408 555 1212'},
             {type:'email', value:'john.smith@example.org'} ];
 

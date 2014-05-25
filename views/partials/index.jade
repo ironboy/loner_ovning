@@ -1,4 +1,4 @@
-h3 Contacts
+h3 Employees
 
 table.table.table-striped
   thead
@@ -7,15 +7,15 @@ table.table.table-striped
     td Age
     td Actions
   tbody
-    tr(ng-repeat="contact in contacts")
-      td {{contact.firstname}}
-      td {{contact.lastname}}
-      td {{contact.age}}
+    tr(ng-repeat="employee in employees")
+      td {{employee.firstname}}
+      td {{employee.lastname}}
+      td {{employee.age}}
       td
-        a(href="/contacts/{{contact._id}}") Show
+        a(href="/employees/{{employee._id}}") Show
         span(style="display:inline-block;width:20px")
-        a(href="/contacts/{{contact._id}}/edit") Edit
+        a(href="/employees/{{employee._id}}/edit") Edit
         span(style="display:inline-block;width:20px")
-        a(href="/contacts/{{contact._id}}/delete") Delete
+        a(href="/employees/{{employee._id}}/delete") Delete
 
-button.btn.btn-success(ng-click="new()") New Contact
+button.btn.btn-success(ng-click="new()") New Employee

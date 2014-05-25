@@ -5,10 +5,10 @@ var app = angular.module('myApp', ["ngResource"]).
   config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
     $routeProvider
-      .when("/contacts", { templateUrl: "partials/index.jade", controller: "ContactsIndexCtrl" })
-      .when("/contacts/new", { templateUrl: "partials/edit.jade", controller: "ContactsEditCtrl" })
-      .when("/contacts/:id", { templateUrl: "partials/show.jade", controller: "ContactsShowCtrl" })
-      .when("/contacts/:id/edit", { templateUrl: "partials/edit.jade", controller: "ContactsEditCtrl" })
-      .when("/contacts/:id/delete", { templateUrl: "partials/show.jade", controller: "ContactsDestroyCtrl"})
-      .otherwise({ redirectTo: "/contacts" });
+      .when("/employees", { templateUrl: "partials/index.jade", controller: "EmployeesIndexCtrl" })
+      .when("/employees/new", { templateUrl: "partials/edit.jade", controller: "EmployeesEditCtrl" })
+      .when("/employees/:id", { templateUrl: "partials/show.jade", controller: "EmployeesShowCtrl" })
+      .when("/employees/:id/edit", { templateUrl: "partials/edit.jade", controller: "EmployeesEditCtrl" })
+      .when("/employees/:id/delete", { templateUrl: "partials/show.jade", controller: "EmployeesDestroyCtrl"})
+      .otherwise({ redirectTo: "/employees" });
   }]);
