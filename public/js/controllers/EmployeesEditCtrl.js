@@ -1,9 +1,13 @@
 app.controller("EmployeesEditCtrl", function($scope, $routeParams, $location, Employee, Department) {
-
+ 
   if ($routeParams.id) {
     $scope.employee = Employee.show({ id: $routeParams.id });
   } else {
     $scope.employee = new Employee();
+  }
+
+  if($routeParams.depId){
+    $scope.employee.departmentId = $routeParams.depId;
   }
 
   $scope.departments = Department.index();
@@ -11,13 +15,10 @@ app.controller("EmployeesEditCtrl", function($scope, $routeParams, $location, Em
   $scope.submit = function() {
 
     function success(response) {
-      console.log("success", response)
       $location.path("/contacts");
     }
 
     function failure(response) {
-      console.log("failure", response)
-
       _.each(response.data, function(errors, key) {
         if (errors.length > 0) {
           _.each(errors, function(e) {

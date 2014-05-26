@@ -32,6 +32,6 @@ autoREST.modify(routes["GET:employees/:id"],{
 });
 
 // Return a list of employees in a certain department
-autoREST.add(routes,"GET:employees/departments/:id",{
+autoREST.add(routes,"GET:employees/department/:id",{
   query: function(req){ return {departmentId: req.params.id}; }
 });

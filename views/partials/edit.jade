@@ -3,12 +3,12 @@ h3 Employee Details
 form.form-horizontal(name="form", ng-submit="submit()", novalidate)
 
  .control-group(ng-class="errorClass('department')")
-    label.control-label(for="firstname") Department
+    label.control-label(for="department") Department
     .controls
       select(ng-model="employee.departmentId", name="department", require, ng-options="department._id as department.name for department in departments", autofocus)
 
  .control-group(ng-class="errorClass('pno')")
-    label.control-label(for="age") P-number
+    label.control-label(for="pno") P-number
     .controls
       input(ng-model="employee.pno", type="number", name="pno", placeholder="P-number", require)
 
@@ -27,10 +27,7 @@ form.form-horizontal(name="form", ng-submit="submit()", novalidate)
     .controls
       input(ng-model="employee.salary", type="number", name="salary", placeholder="Monthly salary", require)
 
-
   .control-group
     .controls
       a.btn(ng-click="cancel()") Cancel
       button.btn.btn-success(type="submit") Save
-
-a(href="/employees/{{employee.id}}") Back

@@ -21,7 +21,8 @@ div
 
 hr
 
-div
-  a(href="/employees") Back
-div
-  a(href="/employees/{{employee._id}}/edit") Edit
+
+.control-group
+    .controls
+      a.btn(href="/employees") Back
+      a.btn.btn-success(href="/employees/{{employee._id}}/edit") Edit

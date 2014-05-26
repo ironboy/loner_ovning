@@ -5,3 +5,7 @@ body {
 footer {
   margin-top: 20px;
 }
+
+.btn, button {
+  margin-right:10px;
+}

@@ -14,6 +14,16 @@ app.factory("Employee", function($resource, $http) {
   return resource;
 });
 
+app.factory("EmployeeDepartment", function($resource, $http) {
+  var resource = $resource("/api/employees/department/:id", { id: "@_id" },
+    {
+      'index':   { method: 'GET', isArray: true },
+    }
+  );
+
+  return resource;
+});
+
 app.factory("Department", function($resource, $http) {
   var resource = $resource("/api/departments/:id", { id: "@_id" },
     {

@@ -1,4 +1,11 @@
-h3 Employees
+h3 Department: {{department.name}}
+div 
+  b Info:
+div(style="margin-bottom:20px") {{department.info}}
+div 
+  b Address:
+  div(style="margin-bottom:20px") {{department.streetAdress}}, {{department.zipCode}} {{department.town}}
+hr
 
 table.table.table-striped
   thead
@@ -6,7 +13,6 @@ table.table.table-striped
     td First Name
     td Last Name
     td Salary
-    td Department
     td Actions
   tbody
     tr(ng-repeat="employee in employees")
@@ -14,8 +20,6 @@ table.table.table-striped
       td {{employee.firstname}}
       td {{employee.lastname}}
       td {{employee.salary}}
-      td 
-        a(href="/employees/department/{{employee.departmentId}}") {{employee.department}}
       td
         a(href="/employees/{{employee._id}}") Show
         span(style="display:inline-block;width:20px")
@@ -23,4 +27,5 @@ table.table.table-striped
         span(style="display:inline-block;width:20px")
         a(href="/employees/{{employee._id}}/delete") Delete
 
+a.btn(href="/employees") Back
 button.btn.btn-success(ng-click="new()") New Employee
