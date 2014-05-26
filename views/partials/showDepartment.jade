@@ -4,28 +4,30 @@ div
 div(style="margin-bottom:20px") {{department.info}}
 div 
   b Address:
-  div(style="margin-bottom:20px") {{department.streetAdress}}, {{department.zipCode}} {{department.town}}
+  div(style="margin-bottom:20px") {{department.streetAddress}}, {{department.zipCode}} {{department.town}}
+  div(style="margin-bottom:20px") Number of employees in {{department.name}}: {{employees.length}}
 hr
 
-table.table.table-striped
-  thead
-    td P-number
-    td First Name
-    td Last Name
-    td Salary
-    td Actions
-  tbody
-    tr(ng-repeat="employee in employees")
-      td {{employee.pno}}
-      td {{employee.firstname}}
-      td {{employee.lastname}}
-      td {{employee.salary}}
-      td
-        a(href="/employees/{{employee._id}}") Show
-        span(style="display:inline-block;width:20px")
-        a(href="/employees/{{employee._id}}/edit") Edit
-        span(style="display:inline-block;width:20px")
-        a(href="/employees/{{employee._id}}/delete") Delete
+div(ng-switch="!!employees.length")
+  table.table.table-striped(ng-switch-when="true")
+    thead
+      td P-number
+      td First Name
+      td Last Name
+      td Salary
+      td Actions
+    tbody
+      tr(ng-repeat="employee in employees")
+        td {{employee.pno}}
+        td {{employee.firstname}}
+        td {{employee.lastname}}
+        td {{employee.salary}}
+        td
+          a(href="/employees/{{employee._id}}") Show
+          span(style="display:inline-block;width:20px")
+          a(href="/employees/{{employee._id}}/edit") Edit
+          span(style="display:inline-block;width:20px")
+          a(href="/employees/{{employee._id}}/delete") Delete
 
 a.btn(href="/employees") Back
 button.btn.btn-success(ng-click="new()") New Employee

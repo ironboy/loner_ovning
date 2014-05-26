@@ -1,26 +1,29 @@
 h3 Employees
 
-table.table.table-striped
-  thead
-    td P-number
-    td First Name
-    td Last Name
-    td Salary
-    td Department
-    td Actions
-  tbody
-    tr(ng-repeat="employee in employees")
-      td {{employee.pno}}
-      td {{employee.firstname}}
-      td {{employee.lastname}}
-      td {{employee.salary}}
-      td 
-        a(href="/employees/department/{{employee.departmentId}}") {{employee.department}}
-      td
-        a(href="/employees/{{employee._id}}") Show
-        span(style="display:inline-block;width:20px")
-        a(href="/employees/{{employee._id}}/edit") Edit
-        span(style="display:inline-block;width:20px")
-        a(href="/employees/{{employee._id}}/delete") Delete
+div(style="margin-bottom:20px") Number of employees: {{employees.length}}
+
+div(ng-switch="!!employees.length")
+  table.table.table-striped(ng-switch-when="true")
+    thead
+      td P-number
+      td First Name
+      td Last Name
+      td Salary
+      td Department
+      td Actions
+    tbody
+      tr(ng-repeat="employee in employees")
+        td {{employee.pno}}
+        td {{employee.firstname}}
+        td {{employee.lastname}}
+        td {{employee.salary}}
+        td 
+          a(href="/employees/department/{{employee.departmentId}}") {{employee.department}}
+        td
+          a(href="/employees/{{employee._id}}") Show
+          span(style="display:inline-block;width:20px")
+          a(href="/employees/{{employee._id}}/edit") Edit
+          span(style="display:inline-block;width:20px")
+          a(href="/employees/{{employee._id}}/delete") Delete
 
 button.btn.btn-success(ng-click="new()") New Employee
