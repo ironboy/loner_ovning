@@ -1,7 +1,7 @@
 // Schema for Departments;
 exports.schema = {
   name: String,
-  streetAdress: String,
+  streetAddress: String,
   zipCode: String,
   town: String,
   info: String
