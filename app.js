@@ -25,56 +25,12 @@ app.configure('production', function(){
 app.get('/', routes.index);
 app.get('/partials/:name', routes.partials);
 
-// Require the mongoose connection
-var mongoose = require("./mongooseConnect").mongoose;
-
-// Register an api route
-function regRoute(route, i, modelName){
-  var path = i.split(':');
-  var method = path.shift().toLowerCase();
-  path = path.join(':');
-  console.log("Registering api paths",method,path);
-  app[method]("/api/" + path,function(req,res){
-    if(!route.query){
-      route.response({},res,req,models);
-      return;
-    }
-    var args = route.query(req);
-    if(!args.push){args = [args];}
-    args.push(function(err,obj){
-      if(err){
-        console.log("API error",err);
-        res.json([]);
-      }
-      else {
-        route.response(obj,res,req,models);
-      }
-    });
-    models[modelName][route.queryType || "find"].apply(
-      models[modelName], args
-    );
-  });
-}
-
-// Register a schema, its methods and its routes
-var models = {};
-function regSchema(schemaName){
-  console.log("Registrering schema",schemaName);
-  var i, s = require("./schemas/" + schemaName);
-  var schema =  mongoose.Schema(s.schema);
-  for(i in s.methods){
-    schema.methods[i] = s.methods[i];
-    console.log("Registering method",schemaName + '.' + i);
-  }
-  models[schemaName] = mongoose.model(schemaName,schema);
-  for(i in s.routes){regRoute(s.routes[i],i,schemaName);}
-}
-
-// Register all schemas
-[
-  "Employee",
-  "Department"
-].forEach(regSchema);
+// Register all schemas (and their api routes)
+require("./libs/autoREST").registerSchemas({
+  app: app,
+  db: "wages_database",
+  schemas: ["Department", "Employee"]
+});
 
 // Take care of routes not defined
 // (important that this comes last 

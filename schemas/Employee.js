@@ -7,76 +7,31 @@ exports.schema = {
   departmentId: String
 };
 
+// Require autoREST-library
+var autoREST = require("../libs/autoREST");
+
 // API routes for Employee
-var routes = exports.routes = {};
+var routes = exports.routes = autoREST.buildRoutes(
+  "Employee", "employees:ALL"
+);
 
-// The equivalent of a join  
-// - used to include the department name
-// with the employee
-var employeePopulator = function(obj, res, models, findOne){
-  require("../populate").populate({
-    res: res,
-    obj: obj,
-    join: models.Department,
-    joinOn: ["departmentId","_id"],
+// List of employeers - modify with a join on department
+autoREST.modify(routes["GET:employees"],{
+  populate: {
+    join: "Department",
+    joinOn: ["departmentId", "_id"],
     filter: "name",
-    toProperty: "department",
-    findOne: findOne
-  });
-};
-
-// Return a list of employees
-routes["GET:employees"] = {
-  query: function(req){ return {}; },
-  response:  function(arr,res,req,models){
-    employeePopulator(arr,res,models);
+    toProperty: "department"
   }
-};
+});
 
-// Return one employee
-routes["GET:employees/:id"] = {
-  queryType: "findOne",
-  query: function(req){ return {_id: req.params.id}; },
-  response:  function(obj,res,req,models){
-    employeePopulator(obj,res,models,true);
-  }
-};
+// One employee - modify with join on department
+// (reusing the join from our previous route)
+autoREST.modify(routes["GET:employees/:id"],{
+  populate: routes["GET:employees"].populate
+});
 
 // Return a list of employees in a certain department
-routes["GET:employees/departments/:id"] = {
-  query: function(req){ return {departmentId: req.params.id}; },
-  response:  function(arr,res){
-    res.json(arr);
-  }
-};
-
-// Create a new employee
-routes["POST:employees"] = {
-  response: function(obj, res, req, models){
-    var employee = new models.Employee(req.body);
-    employee.save();
-    res.json(employee);
-  }
-};
-
-// Update an employee
-routes["PUT:employees/:id"] = {
-  queryType: "findByIdAndUpdate",
-  query: function(req){
-    var b = req.body;
-    delete b._id;
-    return [
-      req.params.id,
-      { $set: b},
-      {upsert: true}
-    ];
-  },
-  response: function(obj,res){ res.json(true); }
-};
-
-// Delete an employee
-routes["DELETE:employees/:id"] = {
-  queryType: "remove",
-  query: function(req){ return {_id: req.params.id}; },
-  response: function(obj, res){ return res.json(true); }
-};
+autoREST.add(routes,"GET:employees/departments/:id",{
+  query: function(req){ return {departmentId: req.params.id}; }
+});

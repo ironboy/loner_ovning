@@ -1,6 +1,6 @@
 'use strict';
 
-// Declare app level module which depends on filters, and services
+// Declare app level module which depends on services (and filters if we had any)
 var app = angular.module('myApp', ["ngResource"]).
   config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(true);

@@ -18,6 +18,10 @@
     findOne: true // only one result back (as an object)
   });
 
+  Gets simplified further by being used from the autoREST 
+  module, where you only have to express 
+  join, joinOn, filter and toProperty
+
 */
 
 exports.populate = function(settings){
@@ -26,7 +30,10 @@ exports.populate = function(settings){
   var results = [];
   if(!s.obj){s.res.json([]); return; }
   s.obj = s.obj.push ? s.obj : [s.obj];
+  // Loop through each original result to populate
+  // it by our "join"
   s.obj.forEach(function(outerObj){
+    // Build or query based on the join condition
     var query = {};
     query[s.joinOn[1]] = outerObj[s.joinOn[0]];
     s.join.find(query,s.filter,function(err,obj){
@@ -41,8 +48,8 @@ exports.populate = function(settings){
         }
       }
       results.push(obj);
-      // Now we have found all the results of our populate queries
-      // so pack things up...
+      // Now we have found all the results from our
+      // new "populating queries" so we pack things up...
       if(results.length == s.obj.length){
         finish(s, results);
       }
