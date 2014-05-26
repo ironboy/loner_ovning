@@ -1,5 +1,3 @@
-'use strict';
-
 app.factory("Employee", function($resource, $http) {
   var resource = $resource("/api/employees/:id", { id: "@_id" },
     {
